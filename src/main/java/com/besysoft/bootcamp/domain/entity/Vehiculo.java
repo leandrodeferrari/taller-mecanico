@@ -1,5 +1,6 @@
 package com.besysoft.bootcamp.domain;
 
+import com.besysoft.bootcamp.domain.entity.Cliente;
 import lombok.Getter;
 import lombok.Setter;
 
