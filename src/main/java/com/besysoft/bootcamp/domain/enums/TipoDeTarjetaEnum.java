@@ -8,7 +8,8 @@ public enum TipoDeTarjetaEnum {
     MERCADO_PAGO("Mercado pago"),
     CREDITO("Crédito"),
     DEBITO("Débito"),
-    CUENTA_DNI("Cuenta DNI");
+    CUENTA_DNI("Cuenta DNI"),
+    NINGUNA("Ninguna");
 
     private final String nombre;
 
