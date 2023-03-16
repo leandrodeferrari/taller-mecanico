@@ -1,6 +1,7 @@
 package com.besysoft.bootcamp.exception.handler;
 
-import com.besysoft.bootcamp.dto.ExcepcionDto;
+import com.besysoft.bootcamp.dto.response.ExcepcionDto;
+import com.besysoft.bootcamp.exception.OrdenDeTrabajoException;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -35,6 +36,18 @@ public class ApiControllerAdvice {
 
         return new ExcepcionDto(HttpStatus.BAD_REQUEST.value(), "Validaciones", detalle);
 
+    }
+
+    @ExceptionHandler
+    @ResponseBody
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ExcepcionDto ordenDeTrabajoException(OrdenDeTrabajoException ex){
+        log.info("Ocurrio una validacion de Orden de Trabajo: " + ex.getMessage());
+        return new ExcepcionDto(
+                HttpStatus.BAD_REQUEST.value(),
+                ex.getMessage(),
+                null
+        );
     }
 
 }

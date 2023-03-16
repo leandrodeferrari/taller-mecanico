@@ -8,6 +8,6 @@ public enum ActivoEnum {
     FALSO('F'),
     VERDADERO('V');
 
-    private final Character nombre;
+    public final Character nombre;
 
 }

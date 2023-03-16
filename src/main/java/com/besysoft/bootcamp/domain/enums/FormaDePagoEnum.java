@@ -11,6 +11,6 @@ public enum FormaDePagoEnum {
     TRANSFERENCIA("Transferencia"),
     MERCADO_PAGO ("Mercado Pago");
 
-    private final String nombre;
+    public final String nombre;
 
 }

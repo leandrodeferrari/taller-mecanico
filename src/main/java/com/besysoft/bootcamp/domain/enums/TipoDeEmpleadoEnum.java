@@ -8,6 +8,6 @@ public enum TipoDeEmpleadoEnum {
     ADMINISTRATIVO("Administrativo"),
     RECEPCIONISTA("Recepcionista");
 
-    private final String nombre;
+    public final String nombre;
 
 }

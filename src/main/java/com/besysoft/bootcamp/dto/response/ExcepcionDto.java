@@ -1,4 +1,4 @@
-package com.besysoft.bootcamp.dto;
+package com.besysoft.bootcamp.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
