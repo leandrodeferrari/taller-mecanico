@@ -1,6 +1,10 @@
 package com.besysoft.bootcamp.util;
 
+import com.besysoft.bootcamp.domain.enums.EstadoEnum;
 import com.besysoft.bootcamp.dto.request.OrdenDeTrabajoInDto;
+import com.besysoft.bootcamp.dto.response.OrdenDeTrabajoOutDto;
+
+import java.time.LocalDateTime;
 
 public class OrdenDeTrabajoTestUtil {
 
@@ -10,6 +14,20 @@ public class OrdenDeTrabajoTestUtil {
         dto.setKilometraje(120_000L);
         dto.setDetalleDeLaFalla("Falla en el cilindro");
         dto.setNivelDelCombustible("Lleno");
+
+        return dto;
+
+    }
+
+    public static OrdenDeTrabajoOutDto generarOrdenDeTrabajoOutDto(){
+
+        OrdenDeTrabajoOutDto dto = new OrdenDeTrabajoOutDto();
+        dto.setKilometraje(120_000L);
+        dto.setDetalleDeLaFalla("Falla en el cilindro");
+        dto.setNivelDelCombustible("Lleno");
+        dto.setId(1L);
+        dto.setEstado(EstadoEnum.CREADA.valor);
+        dto.setFechaDeIngreso(LocalDateTime.now().toString());
 
         return dto;
 
