@@ -9,6 +9,7 @@ import com.besysoft.bootcamp.service.IOrdenDeTrabajoService;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @ConditionalOnProperty(prefix = "app", name = "type-data", havingValue = "database")
@@ -24,6 +25,7 @@ public class OrdenDeTrabajoServiceImpl implements IOrdenDeTrabajoService {
     }
 
     @Override
+    @Transactional
     public OrdenDeTrabajoOutDto crear(OrdenDeTrabajoInDto dto) {
         OrdenDeTrabajo ordenDeTrabajo = this.ordenDeTrabajoMapper.mapToEntity(dto);
         return this.ordenDeTrabajoMapper.mapToDto(this.ordenDeTrabajoRepository.save(ordenDeTrabajo));

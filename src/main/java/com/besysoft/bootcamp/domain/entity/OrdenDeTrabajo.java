@@ -8,6 +8,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -64,5 +65,11 @@ public class OrdenDeTrabajo implements Serializable {
     @ManyToOne
     @JoinColumn(name = "VEHICULO_ID")
     private Vehiculo vehiculo;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "ordenDeTrabajo")
+    private Set<ManoDeObra> manosDeObra;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "ordenDeTrabajo")
+    private Set<DetalleOrdenDeTrabajo> detallesDeOrdenesDeTrabajo;
 
 }

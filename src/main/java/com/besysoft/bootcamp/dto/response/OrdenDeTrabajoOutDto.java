@@ -5,6 +5,7 @@ import lombok.Data;
 @Data
 public class OrdenDeTrabajoOutDto {
 
+    private Long id;
     private String nivelDelCombustible;
     private Long kilometraje;
     private String detalleDeLaFalla;

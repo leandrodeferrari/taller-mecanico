@@ -9,14 +9,11 @@ import io.swagger.annotations.ApiOperation;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
-@Api(value = "Endpoints - Ordenes de Trabajo", tags = "Acciones permitidas para la entidad: OrdenDeTrabajo")
+@Api(value = "Endpoints - Orden de Trabajo", tags = "Acciones permitidas para la entidad: OrdenDeTrabajo")
 @RestController
 @RequestMapping("/ordenes-de-trabajo")
 public class OrdenDeTrabajoController {

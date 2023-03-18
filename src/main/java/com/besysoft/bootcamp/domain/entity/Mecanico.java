@@ -6,6 +6,7 @@ import lombok.Setter;
 import javax.persistence.*;
 
 import java.io.Serializable;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -50,5 +51,8 @@ public class Mecanico implements Serializable {
 
     @Column(name = "NOMBRES", length = 255)
     private String nombres;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "mecanico")
+    private Set<ManoDeObra> manosDeObra;
 
 }

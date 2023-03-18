@@ -28,7 +28,7 @@ public interface IOrdenDeTrabajoMapper {
     }
 
     default String getEstadoCreado(){
-        return EstadoEnum.CREADA.nombre;
+        return EstadoEnum.CREADA.valor;
     }
 
 }

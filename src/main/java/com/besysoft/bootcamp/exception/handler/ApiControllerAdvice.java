@@ -1,6 +1,8 @@
 package com.besysoft.bootcamp.exception.handler;
 
 import com.besysoft.bootcamp.dto.response.ExcepcionDto;
+import com.besysoft.bootcamp.exception.IdException;
+import com.besysoft.bootcamp.exception.MecanicoException;
 import com.besysoft.bootcamp.exception.OrdenDeTrabajoException;
 
 import lombok.extern.slf4j.Slf4j;
@@ -10,6 +12,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.format.DateTimeParseException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -46,6 +49,42 @@ public class ApiControllerAdvice {
         return new ExcepcionDto(
                 HttpStatus.BAD_REQUEST.value(),
                 ex.getMessage(),
+                null
+        );
+    }
+
+    @ExceptionHandler
+    @ResponseBody
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ExcepcionDto mecanicoException(MecanicoException ex){
+        log.info("Ocurrio una validacion de Mecanico: " + ex.getMessage());
+        return new ExcepcionDto(
+                HttpStatus.BAD_REQUEST.value(),
+                ex.getMessage(),
+                null
+        );
+    }
+
+    @ExceptionHandler
+    @ResponseBody
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ExcepcionDto idException(IdException ex){
+        log.info("Ocurrio una validacion de ID: " + ex.getMessage());
+        return new ExcepcionDto(
+                HttpStatus.BAD_REQUEST.value(),
+                ex.getMessage(),
+                null
+        );
+    }
+
+    @ExceptionHandler
+    @ResponseBody
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ExcepcionDto formatoException(DateTimeParseException ex){
+        log.info("Ocurrio una validacion de formato de hora o fecha: " + ex.getMessage());
+        return new ExcepcionDto(
+                HttpStatus.BAD_REQUEST.value(),
+                "Formato inválido. Formato de fecha: yyyy-MM-dd. Formato de hora: hh:mm:ss",
                 null
         );
     }

@@ -11,6 +11,6 @@ public enum EstadoEnum {
     FACTURADA("Facturada"),
     CERRADA("Cerrada");
 
-    public final String nombre;
+    public final String valor;
 
 }

@@ -11,6 +11,6 @@ public enum TipoDeTarjetaEnum {
     CUENTA_DNI("Cuenta DNI"),
     NINGUNA("Ninguna");
 
-    public final String nombre;
+    public final String valor;
 
 }

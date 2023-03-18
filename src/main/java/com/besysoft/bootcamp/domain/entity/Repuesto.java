@@ -7,6 +7,7 @@ import javax.persistence.*;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -30,5 +31,8 @@ public class Repuesto implements Serializable {
 
     @Column(name = "VALOR", precision = 19, scale = 2)
     private BigDecimal valor;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "repuesto")
+    private Set<DetalleOrdenDeTrabajo> detallesDeOrdenesDeTrabajo;
 
 }
