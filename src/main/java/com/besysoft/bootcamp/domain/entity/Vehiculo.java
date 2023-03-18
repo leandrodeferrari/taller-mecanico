@@ -19,7 +19,7 @@ public class Vehiculo implements Serializable {
     @Column(name = "ID")
     private Long id;
 
-    @Column(name = "ANIO", length = 255)
+    @Column(name = "ANIO")
     private Integer anio;
 
     @Column(name = "COLOR", length = 255)
