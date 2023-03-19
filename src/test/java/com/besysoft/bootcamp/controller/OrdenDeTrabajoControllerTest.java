@@ -1,5 +1,6 @@
 package com.besysoft.bootcamp.controller;
 
+import com.besysoft.bootcamp.domain.enums.EstadoEnum;
 import com.besysoft.bootcamp.dto.request.OrdenDeTrabajoInDto;
 import com.besysoft.bootcamp.dto.response.OrdenDeTrabajoOutDto;
 import com.besysoft.bootcamp.service.IOrdenDeTrabajoService;
@@ -18,9 +19,8 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(OrdenDeTrabajoController.class)
 class OrdenDeTrabajoControllerTest {
@@ -57,6 +57,25 @@ class OrdenDeTrabajoControllerTest {
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(content().json(this.objectMapper.writeValueAsString(esperado)));
         verify(this.ordenDeTrabajoService).crear(any(OrdenDeTrabajoInDto.class));
+    }
+
+    @Test
+    void entregarVehiculo() throws Exception {
+        //GIVEN
+        Long id = 1L;
+        OrdenDeTrabajoOutDto esperado = OrdenDeTrabajoTestUtil.generarOrdenDeTrabajoCerradaDto();
+
+        when(this.ordenDeTrabajoService.entregarVehiculo(anyLong())).thenReturn(esperado);
+
+        //WHEN
+        this.mvc.perform(patch(this.url.concat("/{id}"), id)
+                        .contentType(MediaType.APPLICATION_JSON))
+                //THEN
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(content().json(this.objectMapper.writeValueAsString(esperado)))
+                .andExpect(jsonPath("$.estado").value(EstadoEnum.CERRADA.valor));
+        verify(this.ordenDeTrabajoService).entregarVehiculo(anyLong());
     }
 
 }

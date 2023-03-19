@@ -1,6 +1,7 @@
 package com.besysoft.bootcamp.service.impl;
 
 import com.besysoft.bootcamp.domain.entity.OrdenDeTrabajo;
+import com.besysoft.bootcamp.domain.enums.EstadoEnum;
 import com.besysoft.bootcamp.dto.mapper.IOrdenDeTrabajoMapper;
 import com.besysoft.bootcamp.dto.request.OrdenDeTrabajoInDto;
 import com.besysoft.bootcamp.dto.response.OrdenDeTrabajoOutDto;
@@ -12,6 +13,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+
+import java.util.Optional;
 
 import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;
@@ -43,6 +46,25 @@ class OrdenDeTrabajoServiceImplTest {
         //THEN
         assertEquals(esperado, actual);
         verify(this.ordenDeTrabajoRepository).save(any(OrdenDeTrabajo.class));
+    }
+
+    @Test
+    void EntregarVehiculo_RetornarOrdenDeTrabajoOutDto() {
+        //GIVEN
+        OrdenDeTrabajo ordenDeTrabajo = OrdenDeTrabajoTestUtil.generarOrdenDeTrabajoFacturada();
+        Long id = ordenDeTrabajo.getId();
+        OrdenDeTrabajoOutDto esperado = this.ordenDeTrabajoMapper.mapToDto(ordenDeTrabajo);
+
+        when(this.ordenDeTrabajoRepository.findById(anyLong())).thenReturn(Optional.of(ordenDeTrabajo));
+        esperado.setEstado(EstadoEnum.CERRADA.valor);
+
+        //WHEN
+        OrdenDeTrabajoOutDto actual = this.ordenDeTrabajoService.entregarVehiculo(id);
+
+        //THEN
+        assertEquals(esperado, actual);
+        assertEquals(EstadoEnum.CERRADA.valor, actual.getEstado());
+        verify(this.ordenDeTrabajoRepository).findById(anyLong());
     }
 
 }

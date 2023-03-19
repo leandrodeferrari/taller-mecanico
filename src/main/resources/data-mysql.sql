@@ -46,7 +46,7 @@ INSERT INTO cliente_vehiculo(CLIENTE_ID, VEHICULO_ID)
 
 INSERT INTO ordenes_trabajo(CANTIDAD_CUOTAS, DETALLE_FALLA, ESTADO, FECHA_FIN_REPARACION, FECHA_INGRESO,
  FECHA_PAGO, FORMA_PAGO, IMPORTE_TOTAL, KILOMETRAJE, NIVEL_COMBUSTIBLE, TIPO_TARJETA, ADMINISTRATIVO_ID, RECEPCIONISTA_ID, VEHICULO_ID)
-	VALUES(46, 'Pérdida de dirección y aumento de distancia, en el frenado, notorio', 'Creada', '2023-03-05', '2023-01-25', '2023-03-05', 'Efectivo', 7243.93, 120345, 'Lleno', 'Ninguna', 1, 2, 1);
+	VALUES(46, 'Pérdida de dirección y aumento de distancia, en el frenado, notorio', 'Facturada', '2023-03-05', '2023-01-25', '2023-03-05', 'Efectivo', 7243.93, 120345, 'Lleno', 'Ninguna', 1, 2, 1);
 
 -- Inserts de detalle_ordenes_trabajo
 
