@@ -31,7 +31,7 @@ public class OrdenDeTrabajoController {
     }
 
     @PatchMapping("/{id}")
-    @ApiOperation(value = "Permite la entrega del vehículo - Actividad del caso número 6")
+    @ApiOperation(value = "Permite la entrega del Vehículo - Actividad del caso número 6")
     public ResponseEntity<OrdenDeTrabajoOutDto> entregarVehiculo(@PathVariable Long id){
         return ResponseEntity.ok(this.ordenDeTrabajoService.entregarVehiculo(id));
     }

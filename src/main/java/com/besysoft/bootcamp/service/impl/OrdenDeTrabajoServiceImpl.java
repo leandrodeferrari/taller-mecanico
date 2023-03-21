@@ -30,14 +30,14 @@ public class OrdenDeTrabajoServiceImpl implements IOrdenDeTrabajoService {
     }
 
     @Override
-    @Transactional
+    @Transactional(readOnly = false)
     public OrdenDeTrabajoOutDto crear(OrdenDeTrabajoInDto dto) {
         OrdenDeTrabajo ordenDeTrabajo = this.ordenDeTrabajoMapper.mapToEntity(dto);
         return this.ordenDeTrabajoMapper.mapToDto(this.ordenDeTrabajoRepository.save(ordenDeTrabajo));
     }
 
     @Override
-    @Transactional
+    @Transactional(readOnly = false)
     public OrdenDeTrabajoOutDto entregarVehiculo(Long id) {
 
         ValidacionGeneralUtil.validarId(id);

@@ -1,9 +1,7 @@
 package com.besysoft.bootcamp.exception.handler;
 
 import com.besysoft.bootcamp.dto.response.ExcepcionDto;
-import com.besysoft.bootcamp.exception.IdException;
-import com.besysoft.bootcamp.exception.MecanicoException;
-import com.besysoft.bootcamp.exception.OrdenDeTrabajoException;
+import com.besysoft.bootcamp.exception.*;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -68,8 +66,44 @@ public class ApiControllerAdvice {
     @ExceptionHandler
     @ResponseBody
     @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ExcepcionDto clienteException(ClienteException ex){
+        log.info("Ocurrio una validacion de Cliente: " + ex.getMessage());
+        return new ExcepcionDto(
+                HttpStatus.BAD_REQUEST.value(),
+                ex.getMessage(),
+                null
+        );
+    }
+
+    @ExceptionHandler
+    @ResponseBody
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ExcepcionDto clienteVehiculoException(ClienteVehiculoException ex){
+        log.info("Ocurrio una validacion de Cliente-Vehiculo: " + ex.getMessage());
+        return new ExcepcionDto(
+                HttpStatus.BAD_REQUEST.value(),
+                ex.getMessage(),
+                null
+        );
+    }
+
+    @ExceptionHandler
+    @ResponseBody
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ExcepcionDto idException(IdException ex){
         log.info("Ocurrio una validacion de ID: " + ex.getMessage());
+        return new ExcepcionDto(
+                HttpStatus.BAD_REQUEST.value(),
+                ex.getMessage(),
+                null
+        );
+    }
+
+    @ExceptionHandler
+    @ResponseBody
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ExcepcionDto vehiculoException(VehiculoException ex){
+        log.info("Ocurrio una validacion de Vehiculo: " + ex.getMessage());
         return new ExcepcionDto(
                 HttpStatus.BAD_REQUEST.value(),
                 ex.getMessage(),
