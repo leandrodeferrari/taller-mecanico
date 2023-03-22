@@ -60,4 +60,11 @@ public class OrdenDeTrabajoServiceImpl implements IOrdenDeTrabajoService {
 
     }
 
+    @Override
+    @Transactional(readOnly = true)
+    public Optional<OrdenDeTrabajo> buscarPorId(Long id) {
+        ValidacionGeneralUtil.validarId(id);
+        return this.ordenDeTrabajoRepository.findById(id);
+    }
+
 }

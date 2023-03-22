@@ -1,9 +1,8 @@
 package com.besysoft.bootcamp.controller;
 
-import com.besysoft.bootcamp.dto.request.ClienteVehiculoInDto;
-import com.besysoft.bootcamp.dto.response.ClienteVehiculoOutDto;
-import com.besysoft.bootcamp.service.IClienteService;
-import com.besysoft.bootcamp.util.ClienteTestUtil;
+import com.besysoft.bootcamp.dto.response.ManoDeObraOutDto;
+import com.besysoft.bootcamp.service.IMecanicoService;
+import com.besysoft.bootcamp.util.ManoDeObraTestUtil;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -21,14 +20,14 @@ import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@WebMvcTest(ClienteController.class)
-class ClienteControllerTest {
+@WebMvcTest(MecanicoController.class)
+class MecanicoControllerTest {
 
     @Autowired
     private MockMvc mvc;
 
     @MockBean
-    private IClienteService clienteService;
+    private IMecanicoService mecanicoService;
 
     private ObjectMapper objectMapper;
     private String url;
@@ -36,26 +35,28 @@ class ClienteControllerTest {
     @BeforeEach
     void setUp() {
         this.objectMapper = new ObjectMapper();
-        this.url = "/clientes";
+        this.url = "/mecanicos";
     }
 
     @Test
-    void recibirClienteVehiculo() throws Exception {
+    void generarManoDeObra() throws Exception {
         //GIVEN
-        ClienteVehiculoInDto dto = ClienteTestUtil.generarClienteVehiculoInDto();
-        ClienteVehiculoOutDto esperado = ClienteTestUtil.generarClienteVehiculoOutDto();
+        Long mecanicoId = 1L;
+        Long ordenDeTrabajoId = 1L;
+        ManoDeObraOutDto esperado = ManoDeObraTestUtil.generarManoDeObraOutDto();
 
-        when(this.clienteService.recibirClienteVehiculo(any(ClienteVehiculoInDto.class))).thenReturn(esperado);
+        when(this.mecanicoService.generarManoDeObra(anyLong(), anyLong())).thenReturn(esperado);
 
         //WHEN
-        this.mvc.perform(post(this.url.concat("/clientes-vehiculos"))
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(this.objectMapper.writeValueAsString(dto)))
+        this.mvc.perform(
+                patch(this.url.concat("/{mecanicoId}/ordenes-de-trabajo/{ordenDeTrabajoId}/manos-de-obra"),
+                mecanicoId, ordenDeTrabajoId)
+                        .contentType(MediaType.APPLICATION_JSON))
                 //THEN
-                .andExpect(status().isCreated())
+                .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(content().json(this.objectMapper.writeValueAsString(esperado)));
-        verify(this.clienteService).recibirClienteVehiculo(any(ClienteVehiculoInDto.class));
+        verify(this.mecanicoService).generarManoDeObra(anyLong(), anyLong());
     }
 
 }

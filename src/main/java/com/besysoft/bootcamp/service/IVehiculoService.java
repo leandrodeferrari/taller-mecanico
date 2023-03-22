@@ -6,7 +6,6 @@ import java.util.Optional;
 
 public interface IVehiculoService {
 
-    boolean existePorPatente(String patente);
     Optional<Vehiculo> buscarPorPatente(String patente);
     Vehiculo crear(Vehiculo vehiculo);
 

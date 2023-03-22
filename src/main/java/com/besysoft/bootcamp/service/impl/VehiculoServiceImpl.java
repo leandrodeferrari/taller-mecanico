@@ -6,25 +6,20 @@ import com.besysoft.bootcamp.repository.IVehiculoRepository;
 import com.besysoft.bootcamp.service.IVehiculoService;
 import com.besysoft.bootcamp.util.VehiculoUtil;
 
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
 @Service
+@ConditionalOnProperty(prefix = "app", name = "type-data", havingValue = "database")
 public class VehiculoServiceImpl implements IVehiculoService {
 
     private final IVehiculoRepository vehiculoRepository;
 
     public VehiculoServiceImpl(IVehiculoRepository vehiculoRepository) {
         this.vehiculoRepository = vehiculoRepository;
-    }
-
-    @Override
-    @Transactional(readOnly = true)
-    public boolean existePorPatente(String patente) {
-        VehiculoUtil.validarPatente(patente);
-        return this.vehiculoRepository.existsByPatente(patente);
     }
 
     @Override

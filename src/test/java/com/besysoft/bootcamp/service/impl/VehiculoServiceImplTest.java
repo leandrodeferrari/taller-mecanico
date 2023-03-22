@@ -26,36 +26,6 @@ class VehiculoServiceImplTest {
     private VehiculoServiceImpl vehiculoService;
 
     @Test
-    void existePorPatente_RetornaVerdadero() {
-        //GIVEN
-        String patente = "ABC123";
-
-        when(this.vehiculoRepository.existsByPatente(anyString())).thenReturn(true);
-
-        //WHEN
-        boolean existePorPatente = this.vehiculoService.existePorPatente(patente);
-
-        //THEN
-        assertTrue(existePorPatente);
-        verify(this.vehiculoRepository).existsByPatente(anyString());
-    }
-
-    @Test
-    void existePorPatente_RetornaFalso() {
-        //GIVEN
-        String patente = "ABC123";
-
-        when(this.vehiculoRepository.existsByPatente(anyString())).thenReturn(false);
-
-        //WHEN
-        boolean existePorPatente = this.vehiculoService.existePorPatente(patente);
-
-        //THEN
-        assertFalse(existePorPatente);
-        verify(this.vehiculoRepository).existsByPatente(anyString());
-    }
-
-    @Test
     void buscarPorPatente_RetornaOptionalConVehiculo() {
         //GIVEN
         String patente = "ABC123";

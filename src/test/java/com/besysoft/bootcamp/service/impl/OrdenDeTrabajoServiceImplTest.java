@@ -67,4 +67,39 @@ class OrdenDeTrabajoServiceImplTest {
         verify(this.ordenDeTrabajoRepository).findById(anyLong());
     }
 
+    @Test
+    void buscarPorId_RetornaOptionalConOrdenDeTrabajo() {
+        //GIVEN
+        Long id = 1L;
+        Optional<OrdenDeTrabajo> esperado = Optional
+                .of(OrdenDeTrabajoTestUtil.generarOrdenDeTrabajoFacturada());
+
+        when(this.ordenDeTrabajoRepository.findById(anyLong())).thenReturn(esperado);
+
+        //WHEN
+        Optional<OrdenDeTrabajo> actual = this.ordenDeTrabajoService.buscarPorId(id);
+
+        //THEN
+        assertTrue(actual.isPresent());
+        assertEquals(esperado, actual);
+        verify(this.ordenDeTrabajoRepository).findById(anyLong());
+    }
+
+    @Test
+    void buscarPorId_RetornaOptionalVacio() {
+        //GIVEN
+        Long id = 1L;
+        Optional<OrdenDeTrabajo> esperado = Optional.empty();
+
+        when(this.ordenDeTrabajoRepository.findById(anyLong())).thenReturn(esperado);
+
+        //WHEN
+        Optional<OrdenDeTrabajo> actual = this.ordenDeTrabajoService.buscarPorId(id);
+
+        //THEN
+        assertTrue(actual.isEmpty());
+        assertEquals(esperado, actual);
+        verify(this.ordenDeTrabajoRepository).findById(anyLong());
+    }
+
 }

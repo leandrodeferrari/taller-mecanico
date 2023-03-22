@@ -42,34 +42,4 @@ class ClienteServiceImplTest {
 
     }
 
-    @Test
-    void existePorCorreoElectronico_RetornaVerdadero() {
-        //GIVEN
-        String correoElectronico = "juan_gomez@hotmail.com";
-
-        when(this.clienteRepository.existsByCorreoElectronico(anyString())).thenReturn(true);
-
-        //WHEN
-        boolean existePorCorreoElectronico = this.clienteService.existePorCorreoElectronico(correoElectronico);
-
-        //THEN
-        assertTrue(existePorCorreoElectronico);
-        verify(this.clienteRepository).existsByCorreoElectronico(anyString());
-    }
-
-    @Test
-    void existePorCorreoElectronico_RetornaFalso() {
-        //GIVEN
-        String correoElectronico = "juan_gomez@hotmail.com";
-
-        when(this.clienteRepository.existsByCorreoElectronico(anyString())).thenReturn(false);
-
-        //WHEN
-        boolean existePorCorreoElectronico = this.clienteService.existePorCorreoElectronico(correoElectronico);
-
-        //THEN
-        assertFalse(existePorCorreoElectronico);
-        verify(this.clienteRepository).existsByCorreoElectronico(anyString());
-    }
-
 }

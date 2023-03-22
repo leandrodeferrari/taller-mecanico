@@ -114,6 +114,18 @@ public class ApiControllerAdvice {
     @ExceptionHandler
     @ResponseBody
     @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ExcepcionDto manoDeObraException(ManoDeObraException ex){
+        log.info("Ocurrio una validacion de Mano De Obra: " + ex.getMessage());
+        return new ExcepcionDto(
+                HttpStatus.BAD_REQUEST.value(),
+                ex.getMessage(),
+                null
+        );
+    }
+
+    @ExceptionHandler
+    @ResponseBody
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ExcepcionDto formatoException(DateTimeParseException ex){
         log.info("Ocurrio una validacion de formato de hora o fecha: " + ex.getMessage());
         return new ExcepcionDto(

@@ -5,17 +5,20 @@ import com.besysoft.bootcamp.domain.entity.Vehiculo;
 import com.besysoft.bootcamp.dto.mapper.IClienteVehiculoMapper;
 import com.besysoft.bootcamp.dto.request.ClienteVehiculoInDto;
 import com.besysoft.bootcamp.dto.response.ClienteVehiculoOutDto;
+import com.besysoft.bootcamp.exception.ClienteVehiculoException;
 import com.besysoft.bootcamp.repository.IClienteRepository;
 import com.besysoft.bootcamp.service.IClienteService;
 import com.besysoft.bootcamp.service.IVehiculoService;
-import com.besysoft.bootcamp.util.ClienteUtil;
 
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
+@ConditionalOnProperty(prefix = "app", name = "type-data", havingValue = "database")
 public class ClienteServiceImpl implements IClienteService {
 
     private final IClienteRepository clienteRepository;
@@ -34,51 +37,60 @@ public class ClienteServiceImpl implements IClienteService {
     @Transactional(readOnly = false)
     public ClienteVehiculoOutDto recibirClienteVehiculo(ClienteVehiculoInDto dto) {
 
-        boolean existeVehiculoPorPatente = this.vehiculoService.existePorPatente(dto.getPatente());
+        Optional<Vehiculo> optionalVehiculo = this.vehiculoService.buscarPorPatente(dto.getPatente());
 
-        if(existeVehiculoPorPatente){
+        if(optionalVehiculo.isPresent()){
 
             // Validar datos del Cliente
 
-            Vehiculo vehiculo = this.vehiculoService.buscarPorPatente(dto.getPatente()).orElseThrow();
+            Vehiculo vehiculo = optionalVehiculo.get();
+
             boolean existeCliente = vehiculo.getClientes()
                     .stream()
                     .anyMatch(c -> c.getCorreoElectronico().equals(dto.getCorreoElectronico()));
 
-            if(existeCliente){
+            if(existeCliente) {
 
                 Cliente cliente = this.clienteRepository
                         .findByCorreoElectronico(dto.getCorreoElectronico()).orElseThrow();
 
                 String info = "Ya existían Cliente y Vehiculo";
+
                 return this.clienteVehiculoMapper.mapToDto(cliente, vehiculo, info);
 
             } else {
 
                 Cliente cliente = new Cliente();
                 this.clienteVehiculoMapper.updateToEntityCliente(dto, cliente);
+
+                if(cliente.getApellido() == null || cliente.getNombres() == null){
+                    throw new ClienteVehiculoException("Si va a crear un cliente, nombres y apellido no pueden ser nulos");
+                }
+
                 Cliente clienteCreado = this.clienteRepository.save(cliente);
                 clienteCreado.setVehiculos(List.of(vehiculo));
                 vehiculo.getClientes().add(clienteCreado);
 
                 String info = "Ya existía Vehiculo y se creó Cliente";
+
                 return this.clienteVehiculoMapper.mapToDto(clienteCreado, vehiculo, info);
 
             }
 
         } else {
 
-            boolean existeClientePorCorreoElectronico =
-                    existePorCorreoElectronico(dto.getCorreoElectronico());
+            Optional<Cliente> optionalCliente = this.clienteRepository
+                    .findByCorreoElectronico(dto.getCorreoElectronico());
 
-            if(existeClientePorCorreoElectronico){
+            if(optionalCliente.isPresent()){
 
                 // Se vincula el vehiculo, al cliente
-                Cliente cliente = this.clienteRepository
-                        .findByCorreoElectronico(dto.getCorreoElectronico()).orElseThrow();
+
+                Cliente cliente = optionalCliente.get();
 
                 Vehiculo vehiculo = new Vehiculo();
                 this.clienteVehiculoMapper.updateToEntityVehiculo(dto, vehiculo);
+
                 Vehiculo vehiculoCreado = this.vehiculoService.crear(vehiculo);
                 vehiculoCreado.setClientes(List.of(cliente));
                 cliente.getVehiculos().add(vehiculoCreado);
@@ -90,9 +102,14 @@ public class ClienteServiceImpl implements IClienteService {
             } else {
 
                 // Crear cliente y vehiculo
+
                 Cliente cliente = new Cliente();
                 Vehiculo vehiculo = new Vehiculo();
                 this.clienteVehiculoMapper.updateToEntities(dto, cliente, vehiculo);
+
+                if(cliente.getApellido() == null || cliente.getNombres() == null){
+                    throw new ClienteVehiculoException("Si va a crear un cliente, nombres y apellido no pueden ser nulos");
+                }
 
                 Cliente clienteCreado = this.clienteRepository.save(cliente);
                 Vehiculo vehiculoCreado = this.vehiculoService.crear(vehiculo);
@@ -107,13 +124,6 @@ public class ClienteServiceImpl implements IClienteService {
 
         }
 
-    }
-
-    @Override
-    @Transactional(readOnly = true)
-    public boolean existePorCorreoElectronico(String correoElectronico) {
-        ClienteUtil.validarCorreoElectronico(correoElectronico);
-        return this.clienteRepository.existsByCorreoElectronico(correoElectronico);
     }
 
 }
