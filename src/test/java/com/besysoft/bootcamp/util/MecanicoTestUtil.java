@@ -2,6 +2,7 @@ package com.besysoft.bootcamp.util;
 
 import com.besysoft.bootcamp.domain.entity.Mecanico;
 import com.besysoft.bootcamp.domain.enums.ActivoEnum;
+import com.besysoft.bootcamp.dto.request.MecanicoInDto;
 import com.besysoft.bootcamp.dto.response.MecanicoOutDto;
 
 public class MecanicoTestUtil {
@@ -29,6 +30,25 @@ public class MecanicoTestUtil {
         mecanico.setEspecialidad("Reparación");
 
         return mecanico;
+
+    }
+
+    public static MecanicoInDto generarMecanicoInDto(){
+
+        MecanicoInDto dto = new MecanicoInDto();
+        dto.setActivo(ActivoEnum.VERDADERO.valor);
+        dto.setApellido("Gomez");
+        dto.setNombres("Leandro Gonzalo");
+        dto.setEspecialidad("Reparación");
+        dto.setCalle("Carrasco");
+        dto.setCodigoPostal("1768");
+        dto.setPiso("3");
+        dto.setLocalidad("Ciudad Madero");
+        dto.setCelular("11-4567-4566");
+        dto.setDepartamento("4");
+        dto.setNumero("345");
+
+        return dto;
 
     }
 

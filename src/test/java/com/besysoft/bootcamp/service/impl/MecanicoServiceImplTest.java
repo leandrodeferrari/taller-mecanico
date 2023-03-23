@@ -4,7 +4,10 @@ import com.besysoft.bootcamp.domain.entity.ManoDeObra;
 import com.besysoft.bootcamp.domain.entity.Mecanico;
 import com.besysoft.bootcamp.domain.enums.ActivoEnum;
 import com.besysoft.bootcamp.dto.mapper.IManoDeObraMapper;
+import com.besysoft.bootcamp.dto.mapper.IMecanicoMapper;
+import com.besysoft.bootcamp.dto.request.MecanicoInDto;
 import com.besysoft.bootcamp.dto.response.ManoDeObraOutDto;
+import com.besysoft.bootcamp.dto.response.MecanicoOutDto;
 import com.besysoft.bootcamp.exception.MecanicoException;
 import com.besysoft.bootcamp.exception.OrdenDeTrabajoException;
 import com.besysoft.bootcamp.repository.IMecanicoRepository;
@@ -30,6 +33,9 @@ class MecanicoServiceImplTest {
 
     @MockBean
     private IManoDeObraService manoDeObraService;
+
+    @Autowired
+    private IMecanicoMapper mecanicoMapper;
 
     @MockBean
     private IMecanicoRepository mecanicoRepository;
@@ -123,6 +129,36 @@ class MecanicoServiceImplTest {
         verify(this.mecanicoRepository).findById(anyLong());
         verify(this.ordenDeTrabajoService).buscarPorId(anyLong());
         verify(this.manoDeObraService, never()).crear(any(ManoDeObra.class));
+    }
+
+    @Test
+    void crear_RetornaMecanicoOutDto() {
+        //GIVEN
+        Mecanico mecanico = MecanicoTestUtil.generarMecanico();
+        MecanicoInDto dto = MecanicoTestUtil.generarMecanicoInDto();
+        MecanicoOutDto esperado = this.mecanicoMapper.mapToDto(mecanico);
+
+        when(this.mecanicoRepository.save(any(Mecanico.class))).thenReturn(mecanico);
+
+        //WHEN
+        MecanicoOutDto actual = this.mecanicoService.crear(dto);
+
+        //THEN
+        assertEquals(esperado, actual);
+        verify(this.mecanicoRepository).save(any(Mecanico.class));
+    }
+
+    @Test
+    void crear_RetornaExcepcion_CuandoActivoTieneUnValorInvalido() {
+        //GIVEN
+        MecanicoInDto dto = MecanicoTestUtil.generarMecanicoInDto();
+        dto.setActivo('D');
+
+        //WHEN Y THEN
+        assertThrows(MecanicoException.class, ()->{
+            this.mecanicoService.crear(dto);
+        });
+        verify(this.mecanicoRepository, never()).save(any(Mecanico.class));
     }
 
 }

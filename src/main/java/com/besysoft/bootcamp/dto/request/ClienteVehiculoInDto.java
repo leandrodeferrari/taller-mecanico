@@ -2,10 +2,7 @@ package com.besysoft.bootcamp.dto.request;
 
 import lombok.Data;
 
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Pattern;
+import javax.validation.constraints.*;
 
 @Data
 public class ClienteVehiculoInDto {
@@ -32,9 +29,11 @@ public class ClienteVehiculoInDto {
     private String correoElectronico;
 
     @NotEmpty(message = "Los nombres, no pueden estar vacíos")
+    @Size(message = "Los nombres no puede ser mayor a 100 carácteres", max = 100)
     private String nombres;
 
     @NotEmpty(message = "El apellido, no puede estar vacío")
+    @Size(message = "El apellido no puede ser mayor a 80 carácteres", max = 80)
     private String apellido;
 
     @NotEmpty(message = "El celular, no puede estar vacío")

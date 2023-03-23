@@ -1,8 +1,11 @@
 package com.besysoft.bootcamp.controller;
 
+import com.besysoft.bootcamp.dto.request.MecanicoInDto;
 import com.besysoft.bootcamp.dto.response.ManoDeObraOutDto;
+import com.besysoft.bootcamp.dto.response.MecanicoOutDto;
 import com.besysoft.bootcamp.service.IMecanicoService;
 import com.besysoft.bootcamp.util.ManoDeObraTestUtil;
+import com.besysoft.bootcamp.util.MecanicoTestUtil;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -57,6 +60,25 @@ class MecanicoControllerTest {
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(content().json(this.objectMapper.writeValueAsString(esperado)));
         verify(this.mecanicoService).generarManoDeObra(anyLong(), anyLong());
+    }
+
+    @Test
+    void crear_RetornaMecanicoOutDto() throws Exception {
+        //GIVEN
+        MecanicoInDto dto = MecanicoTestUtil.generarMecanicoInDto();
+        MecanicoOutDto esperado = MecanicoTestUtil.generarMecanicoOutDto();
+
+        when(this.mecanicoService.crear(any(MecanicoInDto.class))).thenReturn(esperado);
+
+        //WHEN
+        this.mvc.perform(post(this.url)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(this.objectMapper.writeValueAsString(dto)))
+                //THEN
+                .andExpect(status().isCreated())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(content().json(this.objectMapper.writeValueAsString(esperado)));
+        verify(this.mecanicoService).crear(any(MecanicoInDto.class));
     }
 
 }
