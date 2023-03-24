@@ -51,7 +51,7 @@ public class OrdenDeTrabajoServiceImpl implements IOrdenDeTrabajoService {
         OrdenDeTrabajo ordenDeTrabajo = optional.get();
 
         if(!ordenDeTrabajo.getEstado().equals(EstadoEnum.FACTURADA.valor)){
-            throw new OrdenDeTrabajoException("La Orden de Trabajo, no tiene el estado adecuado");
+            throw new OrdenDeTrabajoException("La Orden de Trabajo, no tiene el estado adecuado (Facturada)");
         }
 
         ordenDeTrabajo.setEstado(EstadoEnum.CERRADA.valor);

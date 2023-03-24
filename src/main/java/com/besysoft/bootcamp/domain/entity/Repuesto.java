@@ -7,6 +7,7 @@ import javax.persistence.*;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.HashSet;
 import java.util.Set;
 
 @Getter
@@ -33,6 +34,6 @@ public class Repuesto implements Serializable {
     private BigDecimal valor;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "repuesto")
-    private Set<DetalleOrdenDeTrabajo> detallesDeOrdenesDeTrabajo;
+    private Set<DetalleOrdenDeTrabajo> detallesDeOrdenesDeTrabajo = new HashSet<>();
 
 }

@@ -8,6 +8,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Set;
 
 @Getter
@@ -70,6 +71,6 @@ public class OrdenDeTrabajo implements Serializable {
     private Set<ManoDeObra> manosDeObra;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "ordenDeTrabajo")
-    private Set<DetalleOrdenDeTrabajo> detallesDeOrdenesDeTrabajo;
+    private Set<DetalleOrdenDeTrabajo> detallesDeOrdenesDeTrabajo = new HashSet<>();
 
 }

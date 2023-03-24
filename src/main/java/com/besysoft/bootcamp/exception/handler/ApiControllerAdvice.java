@@ -6,6 +6,7 @@ import com.besysoft.bootcamp.exception.*;
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
@@ -126,11 +127,35 @@ public class ApiControllerAdvice {
     @ExceptionHandler
     @ResponseBody
     @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ExcepcionDto repuestoException(RepuestoException ex){
+        log.info("Ocurrio una validacion de Repuesto: " + ex.getMessage());
+        return new ExcepcionDto(
+                HttpStatus.BAD_REQUEST.value(),
+                ex.getMessage(),
+                null
+        );
+    }
+
+    @ExceptionHandler
+    @ResponseBody
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ExcepcionDto formatoException(DateTimeParseException ex){
         log.info("Ocurrio una validacion de formato de hora o fecha: " + ex.getMessage());
         return new ExcepcionDto(
                 HttpStatus.BAD_REQUEST.value(),
                 "Formato inválido. Formato de fecha: yyyy-MM-dd. Formato de hora: hh:mm:ss",
+                null
+        );
+    }
+
+    @ExceptionHandler
+    @ResponseBody
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ExcepcionDto activoException(HttpMessageNotReadableException ex){
+        log.info("Ocurrio una validacion de Mecanico, del atributo activo: " + ex.getMessage());
+        return new ExcepcionDto(
+                HttpStatus.BAD_REQUEST.value(),
+                "Activo tiene que ser solamente un caracter. F o V",
                 null
         );
     }
