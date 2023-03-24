@@ -32,6 +32,10 @@ public class OrdenDeTrabajoServiceImpl implements IOrdenDeTrabajoService {
     @Override
     @Transactional(readOnly = false)
     public OrdenDeTrabajoOutDto crear(OrdenDeTrabajoInDto dto) {
+        if(dto == null){
+            throw new OrdenDeTrabajoException("El valor ingresado, puede ser nulo");
+        }
+
         OrdenDeTrabajo ordenDeTrabajo = this.ordenDeTrabajoMapper.mapToEntity(dto);
         return this.ordenDeTrabajoMapper.mapToDto(this.ordenDeTrabajoRepository.save(ordenDeTrabajo));
     }
