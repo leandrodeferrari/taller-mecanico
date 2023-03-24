@@ -20,4 +20,7 @@ public class OrdenDeTrabajoInDto {
     @Size(message = "El detalle de la falla no puede ser mayor a 255 carácteres", max = 255)
     private String detalleDeLaFalla;
 
+    @Min(message = "El ID de la recepcionista, no puede ser menor a 0", value = 0)
+    private Long recepcionistaId;
+
 }

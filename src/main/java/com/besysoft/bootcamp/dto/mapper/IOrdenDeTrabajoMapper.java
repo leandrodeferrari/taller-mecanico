@@ -16,11 +16,15 @@ public interface IOrdenDeTrabajoMapper {
 
     @Mappings({
             @Mapping(target = "fechaDeIngreso", expression = "java(getFechaDeIngreso())"),
-            @Mapping(target = "estado", expression = "java(getEstadoCreado())"),
+            @Mapping(target = "estado", expression = "java(getEstadoCreado())")
     })
     OrdenDeTrabajo mapToEntity(OrdenDeTrabajoInDto dto);
 
-    @Mapping(target = "fechaDeIngreso", dateFormat = "yyyy-MM-dd")
+    @Mappings({
+            @Mapping(target = "fechaDeIngreso", dateFormat = "yyyy-MM-dd"),
+            @Mapping(target = "nombreRecepcionista", source = "ordenDeTrabajo.recepcionista.nombres"),
+            @Mapping(target = "recepcionistaId", source = "ordenDeTrabajo.recepcionista.id")
+    })
     OrdenDeTrabajoOutDto mapToDto(OrdenDeTrabajo ordenDeTrabajo);
 
     default LocalDateTime getFechaDeIngreso(){

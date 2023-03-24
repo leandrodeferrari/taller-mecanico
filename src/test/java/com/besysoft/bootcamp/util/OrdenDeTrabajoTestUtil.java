@@ -15,6 +15,7 @@ public class OrdenDeTrabajoTestUtil {
         dto.setKilometraje(120_000L);
         dto.setDetalleDeLaFalla("Falla en el cilindro");
         dto.setNivelDelCombustible("Lleno");
+        dto.setRecepcionistaId(EmpleadoTestUtil.generarRecepcionista().getId());
 
         return dto;
 
@@ -29,6 +30,8 @@ public class OrdenDeTrabajoTestUtil {
         dto.setId(1L);
         dto.setEstado(EstadoEnum.CREADA.valor);
         dto.setFechaDeIngreso(LocalDateTime.now().toString());
+        dto.setRecepcionistaId(EmpleadoTestUtil.generarRecepcionista().getId());
+        dto.setNombreRecepcionista(EmpleadoTestUtil.generarRecepcionista().getNombres());
 
         return dto;
 

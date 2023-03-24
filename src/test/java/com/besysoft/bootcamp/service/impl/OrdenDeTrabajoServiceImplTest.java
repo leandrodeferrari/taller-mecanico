@@ -1,11 +1,14 @@
 package com.besysoft.bootcamp.service.impl;
 
+import com.besysoft.bootcamp.domain.entity.Empleado;
 import com.besysoft.bootcamp.domain.entity.OrdenDeTrabajo;
 import com.besysoft.bootcamp.domain.enums.EstadoEnum;
 import com.besysoft.bootcamp.dto.mapper.IOrdenDeTrabajoMapper;
 import com.besysoft.bootcamp.dto.request.OrdenDeTrabajoInDto;
 import com.besysoft.bootcamp.dto.response.OrdenDeTrabajoOutDto;
 import com.besysoft.bootcamp.repository.IOrdenDeTrabajoRepository;
+import com.besysoft.bootcamp.service.IEmpleadoService;
+import com.besysoft.bootcamp.util.EmpleadoTestUtil;
 import com.besysoft.bootcamp.util.OrdenDeTrabajoTestUtil;
 
 import org.junit.jupiter.api.Test;
@@ -25,6 +28,9 @@ class OrdenDeTrabajoServiceImplTest {
     @MockBean
     private IOrdenDeTrabajoRepository ordenDeTrabajoRepository;
 
+    @MockBean
+    private IEmpleadoService empleadoService;
+
     @Autowired
     private IOrdenDeTrabajoMapper ordenDeTrabajoMapper;
 
@@ -36,9 +42,13 @@ class OrdenDeTrabajoServiceImplTest {
         //GIVEN
         OrdenDeTrabajoInDto dto = OrdenDeTrabajoTestUtil.generarOrdenDeTrabajoInDto();
         OrdenDeTrabajo ordenDeTrabajo = this.ordenDeTrabajoMapper.mapToEntity(dto);
+        Empleado recepcionista = EmpleadoTestUtil.generarRecepcionista();
+        ordenDeTrabajo.setRecepcionista(recepcionista);
         OrdenDeTrabajoOutDto esperado = this.ordenDeTrabajoMapper.mapToDto(ordenDeTrabajo);
+        Optional<Empleado> optionalEmpleado = Optional.of(recepcionista);
 
         when(this.ordenDeTrabajoRepository.save(any(OrdenDeTrabajo.class))).thenReturn(ordenDeTrabajo);
+        when(this.empleadoService.buscarPorId(anyLong())).thenReturn(optionalEmpleado);
 
         //WHEN
         OrdenDeTrabajoOutDto actual = this.ordenDeTrabajoService.crear(dto);

@@ -1,12 +1,16 @@
 package com.besysoft.bootcamp.service.impl;
 
+import com.besysoft.bootcamp.domain.entity.Empleado;
 import com.besysoft.bootcamp.domain.entity.OrdenDeTrabajo;
 import com.besysoft.bootcamp.domain.enums.EstadoEnum;
+import com.besysoft.bootcamp.domain.enums.TipoDeEmpleadoEnum;
 import com.besysoft.bootcamp.dto.mapper.IOrdenDeTrabajoMapper;
 import com.besysoft.bootcamp.dto.request.OrdenDeTrabajoInDto;
 import com.besysoft.bootcamp.dto.response.OrdenDeTrabajoOutDto;
+import com.besysoft.bootcamp.exception.EmpleadoException;
 import com.besysoft.bootcamp.exception.OrdenDeTrabajoException;
 import com.besysoft.bootcamp.repository.IOrdenDeTrabajoRepository;
+import com.besysoft.bootcamp.service.IEmpleadoService;
 import com.besysoft.bootcamp.service.IOrdenDeTrabajoService;
 import com.besysoft.bootcamp.util.ValidacionGeneralUtil;
 
@@ -20,11 +24,14 @@ import java.util.Optional;
 @ConditionalOnProperty(prefix = "app", name = "type-data", havingValue = "database")
 public class OrdenDeTrabajoServiceImpl implements IOrdenDeTrabajoService {
 
+    private final IEmpleadoService empleadoService;
     private final IOrdenDeTrabajoMapper ordenDeTrabajoMapper;
     private final IOrdenDeTrabajoRepository ordenDeTrabajoRepository;
 
-    public OrdenDeTrabajoServiceImpl(IOrdenDeTrabajoMapper ordenDeTrabajoMapper,
+    public OrdenDeTrabajoServiceImpl(IEmpleadoService empleadoService ,
+                                     IOrdenDeTrabajoMapper ordenDeTrabajoMapper,
                                      IOrdenDeTrabajoRepository ordenDeTrabajoRepository) {
+        this.empleadoService = empleadoService;
         this.ordenDeTrabajoMapper = ordenDeTrabajoMapper;
         this.ordenDeTrabajoRepository = ordenDeTrabajoRepository;
     }
@@ -36,7 +43,21 @@ public class OrdenDeTrabajoServiceImpl implements IOrdenDeTrabajoService {
             throw new OrdenDeTrabajoException("El valor ingresado, puede ser nulo");
         }
 
+        Optional<Empleado> optionalRecepcionista = this.empleadoService
+                .buscarPorId(dto.getRecepcionistaId());
+
+        if(optionalRecepcionista.isEmpty()){
+            throw new EmpleadoException("No existe Empleado con ese ID");
+        }
+
+        Empleado recepcionista = optionalRecepcionista.get();
+
+        if(!recepcionista.getTipoDeEmpleado().equals(TipoDeEmpleadoEnum.RECEPCIONISTA.valor)){
+            throw new EmpleadoException("Empleado inválido. No es recepcionista");
+        }
+
         OrdenDeTrabajo ordenDeTrabajo = this.ordenDeTrabajoMapper.mapToEntity(dto);
+        ordenDeTrabajo.setRecepcionista(recepcionista);
         return this.ordenDeTrabajoMapper.mapToDto(this.ordenDeTrabajoRepository.save(ordenDeTrabajo));
     }
 

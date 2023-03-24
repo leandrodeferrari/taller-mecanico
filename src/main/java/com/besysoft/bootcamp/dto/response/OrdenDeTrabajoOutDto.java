@@ -11,5 +11,7 @@ public class OrdenDeTrabajoOutDto {
     private String detalleDeLaFalla;
     private String fechaDeIngreso;
     private String estado;
+    private Long recepcionistaId;
+    private String nombreRecepcionista;
 
 }
