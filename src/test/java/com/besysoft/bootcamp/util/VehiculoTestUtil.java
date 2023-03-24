@@ -1,6 +1,9 @@
 package com.besysoft.bootcamp.util;
 
+import com.besysoft.bootcamp.domain.entity.Cliente;
 import com.besysoft.bootcamp.domain.entity.Vehiculo;
+
+import java.util.List;
 
 public class VehiculoTestUtil {
 
@@ -26,6 +29,11 @@ public class VehiculoTestUtil {
         vehiculo.setColor("Negro");
         vehiculo.setPatente("ABC123");
         vehiculo.setModelo("Fuego");
+
+        Cliente cliente = new Cliente();
+        cliente.setCorreoElectronico("leando_gomez@hotmail.com");
+
+        vehiculo.setClientes(List.of(cliente));
 
         return vehiculo;
 

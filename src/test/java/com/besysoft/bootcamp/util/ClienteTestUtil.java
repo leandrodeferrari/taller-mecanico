@@ -1,5 +1,6 @@
 package com.besysoft.bootcamp.util;
 
+import com.besysoft.bootcamp.domain.entity.Cliente;
 import com.besysoft.bootcamp.dto.request.ClienteVehiculoInDto;
 import com.besysoft.bootcamp.dto.response.ClienteVehiculoOutDto;
 
@@ -41,6 +42,18 @@ public class ClienteTestUtil {
         dto.setInfo("Se creó vehiculo y Cliente");
 
         return dto;
+
+    }
+
+    public static Cliente generarCliente(){
+
+        Cliente cliente = new Cliente();
+        cliente.setId(1L);
+        cliente.setCorreoElectronico("leando_gomez@hotmail.com");
+        cliente.setApellido("Gomez");
+        cliente.setNombres("Roberto Gonzalo");
+
+        return cliente;
 
     }
 
