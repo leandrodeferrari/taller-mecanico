@@ -1,6 +1,8 @@
 package com.besysoft.bootcamp.controller;
 
+import com.besysoft.bootcamp.dto.request.FacturacionInDto;
 import com.besysoft.bootcamp.dto.request.OrdenDeTrabajoInDto;
+import com.besysoft.bootcamp.dto.response.FacturacionOutDto;
 import com.besysoft.bootcamp.dto.response.OrdenDeTrabajoOutDto;
 import com.besysoft.bootcamp.service.IOrdenDeTrabajoService;
 
@@ -38,8 +40,9 @@ public class OrdenDeTrabajoController {
 
     @PatchMapping("/{ordenDeTrabajoId}/administrativos/{administrativoId}")
     @ApiOperation(value = "Permite facturar y cobrar la Orden de Trabajo - Actividad del caso número 5")
-    public ResponseEntity<?> facturar(@PathVariable Long ordenDeTrabajoId,
-                                      @PathVariable Long administrativoId){
+    public ResponseEntity<FacturacionOutDto> facturar(@Valid @RequestBody FacturacionInDto dto,
+                                                      @PathVariable Long ordenDeTrabajoId,
+                                                      @PathVariable Long administrativoId){
         return ResponseEntity.ok(null);
     }
 
