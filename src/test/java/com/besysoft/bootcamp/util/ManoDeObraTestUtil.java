@@ -23,6 +23,7 @@ public class ManoDeObraTestUtil {
         manoDeObra.setId(1L);
         manoDeObra.setDetalle("Arreglo de los amortiguadores traseros");
         manoDeObra.setDuracionEnHoras(LocalTime.now());
+        manoDeObra.setOrdenDeTrabajo(OrdenDeTrabajoTestUtil.generarOrdenDeTrabajoEnReparacion());
 
         return manoDeObra;
 

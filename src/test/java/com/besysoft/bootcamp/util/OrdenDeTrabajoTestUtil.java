@@ -47,6 +47,26 @@ public class OrdenDeTrabajoTestUtil {
 
     }
 
+    public static OrdenDeTrabajo generarOrdenDeTrabajoCreada(){
+
+        OrdenDeTrabajo ordenDeTrabajo = new OrdenDeTrabajo();
+        ordenDeTrabajo.setId(1L);
+        ordenDeTrabajo.setEstado(EstadoEnum.CREADA.valor);
+
+        return ordenDeTrabajo;
+
+    }
+
+    public static OrdenDeTrabajo generarOrdenDeTrabajoEnReparacion(){
+
+        OrdenDeTrabajo ordenDeTrabajo = new OrdenDeTrabajo();
+        ordenDeTrabajo.setId(1L);
+        ordenDeTrabajo.setEstado(EstadoEnum.EN_REPARACION.valor);
+
+        return ordenDeTrabajo;
+
+    }
+
     public static OrdenDeTrabajo generarOrdenDeTrabajoCerrada(){
 
         OrdenDeTrabajo ordenDeTrabajo = new OrdenDeTrabajo();

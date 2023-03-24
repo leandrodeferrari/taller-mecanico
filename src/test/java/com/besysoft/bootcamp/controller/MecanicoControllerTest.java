@@ -1,11 +1,16 @@
 package com.besysoft.bootcamp.controller;
 
 import com.besysoft.bootcamp.dto.request.MecanicoInDto;
+import com.besysoft.bootcamp.dto.request.ReparacionInDto;
 import com.besysoft.bootcamp.dto.response.ManoDeObraOutDto;
 import com.besysoft.bootcamp.dto.response.MecanicoOutDto;
+import com.besysoft.bootcamp.dto.response.OrdenDeTrabajoOutDto;
+import com.besysoft.bootcamp.dto.response.ReparacionOutDto;
 import com.besysoft.bootcamp.service.IMecanicoService;
 import com.besysoft.bootcamp.util.ManoDeObraTestUtil;
 import com.besysoft.bootcamp.util.MecanicoTestUtil;
+import com.besysoft.bootcamp.util.OrdenDeTrabajoTestUtil;
+import com.besysoft.bootcamp.util.ReparacionTestUtil;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -78,6 +83,48 @@ class MecanicoControllerTest {
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(content().json(this.objectMapper.writeValueAsString(esperado)));
         verify(this.mecanicoService).crear(any(MecanicoInDto.class));
+    }
+
+    @Test
+    void iniciarReparacion() throws Exception {
+        //GIVEN
+        Long ordenDeTrabajoId = 1L;
+        OrdenDeTrabajoOutDto esperado = OrdenDeTrabajoTestUtil.generarOrdenDeTrabajoOutDto();
+
+        when(this.mecanicoService.iniciarReparacion(anyLong())).thenReturn(esperado);
+
+        //WHEN
+        this.mvc.perform(patch(this.url.concat("/ordenes-de-trabajo/{ordenDeTrabajoId}"), ordenDeTrabajoId)
+                .contentType(MediaType.APPLICATION_JSON))
+                //THEN
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(content().json(this.objectMapper.writeValueAsString(esperado)));
+        verify(this.mecanicoService).iniciarReparacion(anyLong());
+    }
+
+    @Test
+    void finalizarReparacion() throws Exception {
+        //GIVEN
+        Long manoDeObraId = 1L;
+        Long ordenDeTrabajoId = 1L;
+        ReparacionInDto dto = ReparacionTestUtil.generarReparacionInDto();
+        ReparacionOutDto esperado = ReparacionTestUtil.generarReparacionOutDto();
+
+        when(this.mecanicoService.finalizarReparacion(any(ReparacionInDto.class), anyLong(), anyLong()))
+                .thenReturn(esperado);
+
+        //WHEN
+        this.mvc.perform(patch(this.url
+                .concat("/manos-de-obra/{manoDeObraId}/ordenes-de-trabajo/{ordenDeTrabajoId}/repuestos"),
+                manoDeObraId, ordenDeTrabajoId)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(this.objectMapper.writeValueAsString(dto)))
+                //THEN
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(content().json(this.objectMapper.writeValueAsString(esperado)));
+        verify(this.mecanicoService).finalizarReparacion(any(ReparacionInDto.class), anyLong(), anyLong());
     }
 
 }
