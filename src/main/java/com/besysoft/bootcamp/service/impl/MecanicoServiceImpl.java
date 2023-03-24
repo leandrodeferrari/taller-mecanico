@@ -108,6 +108,10 @@ public class MecanicoServiceImpl implements IMecanicoService {
     @Override
     @Transactional(readOnly = false)
     public MecanicoOutDto crear(MecanicoInDto dto) {
+        if(dto == null){
+            throw new MecanicoException("El valor ingresado no puede ser nulo");
+        }
+
         MecanicoUtil.validarActivo(dto.getActivo());
         Mecanico mecanico = this.mecanicoMapper.mapToEntity(dto);
         return this.mecanicoMapper.mapToDto(this.mecanicoRepository.save(mecanico));

@@ -7,6 +7,7 @@ import com.besysoft.bootcamp.service.IRepuestoService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -29,7 +30,7 @@ public class RepuestoController {
     @PostMapping
     @ApiOperation(value = "Permite crear un Repuesto - Complemento de la Actividad del caso número 4")
     public ResponseEntity<RepuestoOutDto> crear(@Valid @RequestBody RepuestoInDto dto){
-        return ResponseEntity.ok(this.repuestoService.crear(dto));
+        return ResponseEntity.status(HttpStatus.CREATED).body(this.repuestoService.crear(dto));
     }
 
 }
