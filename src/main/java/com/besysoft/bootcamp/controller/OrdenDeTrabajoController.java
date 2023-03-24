@@ -36,4 +36,11 @@ public class OrdenDeTrabajoController {
         return ResponseEntity.ok(this.ordenDeTrabajoService.entregarVehiculo(id));
     }
 
+    @PatchMapping("/{ordenDeTrabajoId}/administrativos/{administrativoId}")
+    @ApiOperation(value = "Permite facturar y cobrar la Orden de Trabajo - Actividad del caso número 5")
+    public ResponseEntity<?> facturar(@PathVariable Long ordenDeTrabajoId,
+                                      @PathVariable Long administrativoId){
+        return ResponseEntity.ok(null);
+    }
+
 }
