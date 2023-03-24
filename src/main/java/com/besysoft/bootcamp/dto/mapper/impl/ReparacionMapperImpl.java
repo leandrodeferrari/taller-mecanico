@@ -10,6 +10,7 @@ import com.besysoft.bootcamp.dto.response.RepuestoOutDto;
 
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,7 +28,7 @@ public class ReparacionMapperImpl implements IReparacionMapper {
 
     @Override
     public ReparacionOutDto mapToDto(ManoDeObra manoDeObra,
-                                     List<Repuesto> repuestos) {
+                                     List<Repuesto> repuestos, LocalDateTime fechaFinDeReparacion) {
 
         ReparacionOutDto dto = new ReparacionOutDto();
 
@@ -40,6 +41,7 @@ public class ReparacionMapperImpl implements IReparacionMapper {
         });
 
         dto.setRepuestos(repuestoOutDtos);
+        dto.setFinDeReparacion(fechaFinDeReparacion.toString());
 
         return dto;
 

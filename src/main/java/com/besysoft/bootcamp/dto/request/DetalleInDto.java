@@ -5,7 +5,7 @@ import lombok.Data;
 @Data
 public class DetalleInDto {
 
-    private Long repuestoId;
+    private Long deatalleId;
     private Integer cantidad;
     
 }

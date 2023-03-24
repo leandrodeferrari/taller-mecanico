@@ -26,6 +26,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
@@ -200,8 +201,9 @@ public class MecanicoServiceImpl implements IMecanicoService {
         });
 
         ordenDeTrabajo.setEstado(EstadoEnum.PARA_FACTURAR.valor);
+        ordenDeTrabajo.setFechaFinDeReparacion(LocalDateTime.now());
 
-        return this.reparacionMapper.mapToDto(manoDeObra, repuestos);
+        return this.reparacionMapper.mapToDto(manoDeObra, repuestos, ordenDeTrabajo.getFechaFinDeReparacion());
 
     }
 

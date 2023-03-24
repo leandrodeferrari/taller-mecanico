@@ -28,6 +28,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
@@ -205,6 +206,7 @@ class MecanicoServiceImplTest {
         //GIVEN
         Long manoDeObraId = 1L;
         Long ordenDeTrabajoId = 1L;
+        LocalDateTime fechaFinDeReparacion = LocalDateTime.now();
 
         ReparacionInDto dto = ReparacionTestUtil.generarReparacionInDto();
 
@@ -214,13 +216,15 @@ class MecanicoServiceImplTest {
         manoDeObra.setDetalle(dto.getDetalle());
         manoDeObra.setDuracionEnHoras(LocalTime.parse(dto.getDuracionEnHoras()));
 
+        OrdenDeTrabajo ordenDeTrabajo = OrdenDeTrabajoTestUtil.generarOrdenDeTrabajoEnReparacion();
+        ordenDeTrabajo.setFechaFinDeReparacion(fechaFinDeReparacion);
         Optional<OrdenDeTrabajo> optionalOrdenDeTrabajo = Optional
-                .of(OrdenDeTrabajoTestUtil.generarOrdenDeTrabajoEnReparacion());
+                .of(ordenDeTrabajo);
 
         List<Repuesto> repuestos = RepuestoTestUtil.generarRepuestos();
         DetalleOrdenDeTrabajo detalle = DetalleOrdenDeTrabajoTestUtil.generarDetalle();
 
-        ReparacionOutDto esperado = this.reparacionMapper.mapToDto(manoDeObra, repuestos);
+        ReparacionOutDto esperado = this.reparacionMapper.mapToDto(manoDeObra, repuestos, fechaFinDeReparacion);
 
         when(this.manoDeObraService.buscarPorId(anyLong())).thenReturn(optionalManoDeObra);
         when(this.ordenDeTrabajoService.buscarPorId(anyLong())).thenReturn(optionalOrdenDeTrabajo);
@@ -231,7 +235,8 @@ class MecanicoServiceImplTest {
         ReparacionOutDto actual = this.mecanicoService.finalizarReparacion(dto, manoDeObraId, ordenDeTrabajoId);
 
         //THEN
-        assertEquals(esperado, actual);
+        assertEquals(esperado.getRepuestos(), actual.getRepuestos());
+        assertEquals(esperado.getManoDeObra(), actual.getManoDeObra());
         verify(this.manoDeObraService).buscarPorId(anyLong());
         verify(this.ordenDeTrabajoService).buscarPorId(anyLong());
         verify(this.repuestoService).buscarTodosPorId(anyList());

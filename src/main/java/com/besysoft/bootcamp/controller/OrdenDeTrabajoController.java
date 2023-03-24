@@ -43,7 +43,7 @@ public class OrdenDeTrabajoController {
     public ResponseEntity<FacturacionOutDto> facturar(@Valid @RequestBody FacturacionInDto dto,
                                                       @PathVariable Long ordenDeTrabajoId,
                                                       @PathVariable Long administrativoId){
-        return ResponseEntity.ok(null);
+        return ResponseEntity.ok(this.ordenDeTrabajoService.facturar(dto, ordenDeTrabajoId, administrativoId));
     }
 
 }

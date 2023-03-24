@@ -7,7 +7,8 @@ import java.util.List;
 @Data
 public class ReparacionOutDto {
 
-    ManoDeObraOutDto manoDeObra;
-    List<RepuestoOutDto> repuestos;
+    private ManoDeObraOutDto manoDeObra;
+    private List<RepuestoOutDto> repuestos;
+    private String finDeReparacion;
 
 }
