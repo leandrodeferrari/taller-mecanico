@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
+import java.util.Optional;
+
 import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -49,6 +51,40 @@ class ManoDeObraServiceImplTest {
             this.manoDeObraService.crear(manoDeObra);
         });
         verify(this.manoDeObraRepository, never()).save(any(ManoDeObra.class));
+    }
+
+    @Test
+    void buscarPorId_RetornaOptionalConManoDeObra() {
+        //GIVEN
+        Long id = 1L;
+        Optional<ManoDeObra> esperado = Optional.of(ManoDeObraTestUtil.generarManoDeObraConId());
+
+        when(this.manoDeObraRepository.findById(anyLong())).thenReturn(esperado);
+
+        //WHEN
+        Optional<ManoDeObra> actual = this.manoDeObraService.buscarPorId(id);
+
+        //THEN
+        assertTrue(actual.isPresent());
+        assertEquals(esperado, actual);
+        verify(this.manoDeObraRepository).findById(anyLong());
+    }
+
+    @Test
+    void buscarPorId_RetornaOptionalVacio() {
+        //GIVEN
+        Long id = 1L;
+        Optional<ManoDeObra> esperado = Optional.empty();
+
+        when(this.manoDeObraRepository.findById(anyLong())).thenReturn(esperado);
+
+        //WHEN
+        Optional<ManoDeObra> actual = this.manoDeObraService.buscarPorId(id);
+
+        //THEN
+        assertTrue(actual.isEmpty());
+        assertEquals(esperado, actual);
+        verify(this.manoDeObraRepository).findById(anyLong());
     }
 
 }

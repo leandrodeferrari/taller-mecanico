@@ -29,7 +29,6 @@ public class RepuestoServiceImpl implements IRepuestoService {
     @Override
     @Transactional(readOnly = true)
     public List<Repuesto> buscarTodosPorId(List<Long> ids) {
-        //Validar ids
         return this.repuestoRepository.findAllById(ids);
     }
 

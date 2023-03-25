@@ -4,11 +4,15 @@ import com.besysoft.bootcamp.domain.entity.Empleado;
 import com.besysoft.bootcamp.domain.entity.OrdenDeTrabajo;
 import com.besysoft.bootcamp.domain.enums.EstadoEnum;
 import com.besysoft.bootcamp.dto.mapper.IOrdenDeTrabajoMapper;
+import com.besysoft.bootcamp.dto.request.FacturacionInDto;
 import com.besysoft.bootcamp.dto.request.OrdenDeTrabajoInDto;
 import com.besysoft.bootcamp.dto.response.OrdenDeTrabajoOutDto;
+import com.besysoft.bootcamp.exception.OrdenDeTrabajoException;
 import com.besysoft.bootcamp.repository.IOrdenDeTrabajoRepository;
+import com.besysoft.bootcamp.service.IDetalleOrdenDeTrabajoService;
 import com.besysoft.bootcamp.service.IEmpleadoService;
 import com.besysoft.bootcamp.util.EmpleadoTestUtil;
+import com.besysoft.bootcamp.util.FacturacionTestUtil;
 import com.besysoft.bootcamp.util.OrdenDeTrabajoTestUtil;
 
 import org.junit.jupiter.api.Test;
@@ -27,6 +31,9 @@ class OrdenDeTrabajoServiceImplTest {
 
     @MockBean
     private IOrdenDeTrabajoRepository ordenDeTrabajoRepository;
+
+    @MockBean
+    private IDetalleOrdenDeTrabajoService detalleService;
 
     @MockBean
     private IEmpleadoService empleadoService;
@@ -110,6 +117,26 @@ class OrdenDeTrabajoServiceImplTest {
         assertTrue(actual.isEmpty());
         assertEquals(esperado, actual);
         verify(this.ordenDeTrabajoRepository).findById(anyLong());
+    }
+
+    @Test
+    void facturar() {
+        //GIVEN
+        Long administrativoId = 1L;
+        Long ordenDeTrabajoId = 1L;
+        FacturacionInDto dto = FacturacionTestUtil.generarFacturacionInDto();
+        Optional<OrdenDeTrabajo> optionalOrdenDeTrabajo = Optional
+                .of(OrdenDeTrabajoTestUtil.generarOrdenDeTrabajoFacturada());
+
+        when(this.ordenDeTrabajoRepository.findById(anyLong())).thenReturn(optionalOrdenDeTrabajo);
+
+        //WHEN Y THEN
+        assertThrows(OrdenDeTrabajoException.class,() -> {
+            this.ordenDeTrabajoService.facturar(dto, ordenDeTrabajoId, administrativoId);
+        });
+        verify(this.ordenDeTrabajoRepository).findById(anyLong());
+        verify(this.empleadoService, never()).buscarPorId(anyLong());
+        verify(this.detalleService, never()).buscarPorId(anyLong());
     }
 
 }
